@@ -8,4 +8,4 @@ test_prune() {
 }
 
 test_prune '.value == "b"' '["b"]' '["a", "b", "c"]'
-test_prune '.value == "b"' '[{"b": "c"}]' '[{"a": "b"}, {"b": "c"}, {"d": "e"}]'
+test_prune '.value == "c"' '[{"b":"c"}]' '[{"a": "b"}, {"b": "c"}, {"d": "e"}]'
