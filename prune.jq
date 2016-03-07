@@ -1,19 +1,22 @@
 def prune(f):
   def _prune_object(f):
-    with_entries(select(f or (.value |= prune(f))))
+    to_entries |
+      map(.value |= prune(f) | select(.)) |
+      from_entries |
+      if (keys | length > 0) then . else empty end
     ;
 
   def _prune_array(f):
-    to_entries | map(select(f or (.value | prune(f))) | .value)
+    to_entries |
+      map(.value |= prune(f) | select(f) | .value) |
+      if (length > 0) then . else empty end
     ;
 
   if type == "object" then
     _prune_object(f)
+  elif type == "array" then
+    _prune_array(f)
   else
-    if type == "array" then
-      _prune_array(f)
-    else
-      if f? then . else empty end
-    end
+    .
   end
   ;
